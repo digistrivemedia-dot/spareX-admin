@@ -1,0 +1,128 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+ * Brand palette (identical to the B2C and B2B sites). Values are placeholders until the client's brand guide
+ * arrives; change them here only. Tailwind's default palette is removed so no other colour can be used.
+ * `static` emits every value as a CSS variable, because charts and the toaster read them at runtime.
+ */
+@theme static {
+  --color-*: initial;
+
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --color-navy-50: #f2f6fb;
+  --color-navy-100: #e6eef8;
+  --color-navy-200: #c5d6ec;
+  --color-navy-600: #24599b;
+  --color-navy-700: #1d4e89;
+  --color-navy-800: #13315c;
+  --color-navy-900: #0b2545;
+
+  --color-orange-50: #fff7ed;
+  --color-orange-100: #ffedd5;
+  --color-orange-500: #f97316;
+  --color-orange-600: #ea580c;
+  --color-orange-700: #c2410c;
+  --color-orange-800: #9a3412;
+
+  --color-gray-50: #f8fafc;
+  --color-gray-100: #f1f5f9;
+  --color-gray-200: #e2e8f0;
+  --color-gray-300: #cbd5e1;
+  --color-gray-400: #94a3b8;
+  --color-gray-500: #64748b;
+  --color-gray-600: #475569;
+  --color-gray-700: #334155;
+  --color-gray-800: #1e293b;
+  --color-gray-900: #0f172a;
+
+  --color-success-50: #f0fdf4;
+  --color-success-600: #16a34a;
+  --color-success-700: #15803d;
+
+  --color-warning-50: #fffbeb;
+  --color-warning-500: #f59e0b;
+  --color-warning-700: #b45309;
+
+  --color-danger-50: #fef2f2;
+  --color-danger-600: #dc2626;
+  --color-danger-700: #b91c1c;
+
+  --color-info-50: #eff6ff;
+  --color-info-700: #1d4ed8;
+
+  /* Chart series, in this order. */
+  --color-chart-1: var(--color-navy-700);
+  --color-chart-2: var(--color-orange-600);
+  --color-chart-3: var(--color-success-600);
+  --color-chart-4: var(--color-warning-500);
+  --color-chart-5: var(--color-info-700);
+  --color-chart-6: var(--color-gray-400);
+}
+
+/* shadcn semantic tokens, mapped onto the brand palette (light mode only). */
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-sans);
+
+  --color-background: var(--color-gray-50);
+  --color-foreground: var(--color-gray-900);
+  --color-card: var(--color-white);
+  --color-card-foreground: var(--color-gray-900);
+  --color-popover: var(--color-white);
+  --color-popover-foreground: var(--color-gray-900);
+  --color-primary: var(--color-orange-700);
+  --color-primary-foreground: var(--color-white);
+  --color-secondary: var(--color-navy-50);
+  --color-secondary-foreground: var(--color-navy-800);
+  --color-muted: var(--color-gray-100);
+  --color-muted-foreground: var(--color-gray-500);
+  --color-accent: var(--color-gray-100);
+  --color-accent-foreground: var(--color-gray-900);
+  --color-destructive: var(--color-danger-700);
+  --color-border: var(--color-gray-200);
+  --color-input: var(--color-gray-300);
+  --color-ring: var(--color-navy-600);
+
+  --color-sidebar: var(--color-navy-900);
+  --color-sidebar-foreground: var(--color-navy-200);
+  --color-sidebar-primary: var(--color-white);
+  --color-sidebar-primary-foreground: var(--color-navy-900);
+  --color-sidebar-accent: var(--color-navy-800);
+  --color-sidebar-accent-foreground: var(--color-white);
+  --color-sidebar-border: var(--color-navy-800);
+  --color-sidebar-ring: var(--color-navy-200);
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+  --radius-4xl: 2rem;
+}
+
+/* shadcn components read these plain variables (e.g. the toaster and charts). */
+:root {
+  --radius: 0.5rem;
+  --popover: var(--color-white);
+  --popover-foreground: var(--color-gray-900);
+  --border: var(--color-gray-200);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-sm text-gray-700 antialiased;
+  }
+  html {
+    @apply font-sans;
+  }
+}
