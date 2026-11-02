@@ -15,6 +15,8 @@ export const features = {
   b2cCashOnDelivery: false,
   /** Garage payouts menu item (A59). Q-09. */
   garagePayouts: false,
+  /** The code step after email and password, and its settings on Profile. Q-33. */
+  twoStepVerification: false,
 } as const
 
 export type FeatureSwitch = keyof typeof features

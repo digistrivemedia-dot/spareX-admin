@@ -11,6 +11,7 @@ import { setAdminUserActiveAction } from "@/features/admin-users/actions"
 import { AdminUserDialog } from "@/features/admin-users/components/AdminUserDialog"
 import type { AdminUser } from "@/features/admin-users/types"
 import { ROLES } from "@/features/auth/permissions"
+import { isEnabled } from "@/lib/features"
 import { formatDateTime, formatPhone } from "@/lib/format"
 
 export function adminUserColumns(
@@ -44,9 +45,11 @@ export function adminUserColumns(
       cell: ({ row }) => (
         <span className="flex flex-col">
           {ROLES[row.original.roleId].name}
-          <span className="text-xs text-gray-500">
-            2-step {row.original.twoStepEnabled ? "on" : "off"}
-          </span>
+          {isEnabled("twoStepVerification") && (
+            <span className="text-xs text-gray-500">
+              2-step {row.original.twoStepEnabled ? "on" : "off"}
+            </span>
+          )}
         </span>
       ),
     },

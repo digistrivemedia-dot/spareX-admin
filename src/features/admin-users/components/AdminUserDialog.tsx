@@ -11,6 +11,7 @@ import { saveAdminUserAction } from "@/features/admin-users/actions"
 import { adminUserSchema, type AdminUserValues } from "@/features/admin-users/schemas"
 import type { AdminUser } from "@/features/admin-users/types"
 import { ROLE_OPTIONS } from "@/features/admin-users/utils"
+import { isEnabled } from "@/lib/features"
 import { formatPhone } from "@/lib/format"
 
 /** Invite a new admin by email, or edit one. Permissions come only from the role. */
@@ -30,7 +31,9 @@ export function AdminUserDialog({ user, trigger }: { user?: AdminUser; trigger: 
       description={
         user
           ? undefined
-          : "They get an email to set their password. Super Admins also set up 2-step verification."
+          : isEnabled("twoStepVerification")
+            ? "They get an email to set their password. Super Admins also set up 2-step verification."
+            : "They get an email to set their password."
       }
       form={form}
       action={(data) => saveAdminUserAction(user?.id ?? null, data)}

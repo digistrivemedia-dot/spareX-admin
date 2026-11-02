@@ -40,3 +40,4 @@ through this list (with the client where needed) and fills in **Answer**. A chan
 | Q-30 | Can **banners, FAQs and coupons be deleted**, or only switched off? | A44, A46, A48 | Banners and FAQs can be deleted (with confirmation); coupons can only be made inactive, to keep order history | | Open |
 | Q-31 | How should **revenue be counted in reports**: incl. or excl. GST, and are refunds and credit notes deducted? | A04, A51, A53 | Incl. GST, cancelled orders excluded, refunds not deducted (shown separately in Payments and Credit notes) | | Open |
 | Q-32 | Which **SMS / OTP provider** will be used, and are there other integrations (email, WhatsApp)? | A56 | MSG91 shown as a placeholder; Razorpay and SMS only | | Open |
+| Q-33 | Should **2-step verification** come back at sign-in (mandatory for Super Admin, optional for Admin)? | A01, A03, A05, A07 | Off for every role, as the client asked: email + password only. Built, `twoStepVerification` switch off | | Open |

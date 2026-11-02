@@ -2,9 +2,11 @@
 
 import * as api from "@/features/admin-users/api"
 import { adminUserSchema, type AdminUserValues } from "@/features/admin-users/schemas"
+import type { AdminUser } from "@/features/admin-users/types"
 import { ADMIN_USER_FILTERS } from "@/features/admin-users/utils"
 import { ROLES } from "@/features/auth/permissions"
 import { exportCsv } from "@/lib/csv-export"
+import { isEnabled } from "@/lib/features"
 import { formatDateTime, formatPhone, humanize } from "@/lib/format"
 import { listParamsFromQuery } from "@/lib/list-params"
 import { runMutation, runValidatedMutation } from "@/lib/server-action"
@@ -31,7 +33,14 @@ export async function exportAdminUsersAction(query: string) {
       { header: "Mobile", value: (row) => formatPhone(row.phone) },
       { header: "Role", value: (row) => ROLES[row.roleId].name },
       { header: "Status", value: (row) => humanize(row.status) },
-      { header: "2-step", value: (row) => (row.twoStepEnabled ? "On" : "Off") },
+      ...(isEnabled("twoStepVerification")
+        ? [
+            {
+              header: "2-step",
+              value: (row: AdminUser) => (row.twoStepEnabled ? "On" : "Off"),
+            },
+          ]
+        : []),
       {
         header: "Last sign-in",
         value: (row) => (row.lastLoginAt ? formatDateTime(row.lastLoginAt) : ""),

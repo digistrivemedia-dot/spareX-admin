@@ -10,6 +10,7 @@ import type {
 import type { AdminUser } from "@/features/admin-users/types"
 import type { AuditChange } from "@/features/audit/types"
 import { ApiError } from "@/lib/api-client"
+import { isEnabled } from "@/lib/features"
 import { adminUsers } from "@/mocks/admin-users"
 import { recordAuditEntry } from "@/mocks/audit"
 import { delay, persistent } from "@/mocks/utils"
@@ -17,11 +18,15 @@ import { delay, persistent } from "@/mocks/utils"
 const DEMO_PASSWORD = "Demo@1234"
 const DEMO_CODE = "123456"
 const CHALLENGE_MINUTES = 10
+/**
+ * The demo token just names the admin, so a sign-in holds on hosts that run several server copies with separate memory
+ * (Vercel). It proves nothing, which is fine while the demo logins are on the sign-in screen; the backend issues real ones.
+ */
+const SESSION_TOKEN_PREFIX = "demo-session."
 
-/** Mirrors the backend: passwords, open sessions, 2-step challenges and reset tokens. */
+/** Mirrors the backend: passwords, 2-step challenges and reset tokens. */
 const state = persistent("auth", () => ({
   passwords: new Map(adminUsers.map((user) => [user.id, DEMO_PASSWORD])),
-  sessions: new Map<string, string>(),
   challenges: new Map<string, { userId: string; expiresAt: string }>(),
   resetTokens: new Map<string, string>(),
 }))
@@ -33,8 +38,7 @@ function findActiveUser(id: string): AdminUser {
 }
 
 function openSession(user: AdminUser): SignInResult {
-  const token = crypto.randomUUID()
-  state.sessions.set(token, user.id)
+  const token = `${SESSION_TOKEN_PREFIX}${user.id}`
   user.lastLoginAt = new Date().toISOString()
   recordAuditEntry(
     { type: "admin", id: user.id, name: user.name },
@@ -58,7 +62,8 @@ export async function signIn(email: string, password: string): Promise<SignInRes
   }
   findActiveUser(user.id)
 
-  if (user.twoStepEnabled || ROLES[user.roleId].twoStepRequired) {
+  const twoStepNeeded = user.twoStepEnabled || ROLES[user.roleId].twoStepRequired
+  if (isEnabled("twoStepVerification") && twoStepNeeded) {
     const challengeId = crypto.randomUUID()
     const expiresAt = new Date(Date.now() + CHALLENGE_MINUTES * 60_000).toISOString()
     state.challenges.set(challengeId, { userId: user.id, expiresAt })
@@ -90,13 +95,11 @@ export async function verifyTwoStep(challengeId: string, code: string): Promise<
 }
 
 export async function getUserByToken(token: string): Promise<AdminUser | null> {
-  const userId = state.sessions.get(token)
+  const userId = token.startsWith(SESSION_TOKEN_PREFIX)
+    ? token.slice(SESSION_TOKEN_PREFIX.length)
+    : null
   const user = adminUsers.find((candidate) => candidate.id === userId)
   return user?.status === "active" ? user : null
-}
-
-export async function signOut(token: string): Promise<void> {
-  state.sessions.delete(token)
 }
 
 export async function requestPasswordReset(email: string): Promise<PasswordResetRequest> {

@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { permissionGroups } from "@/features/admin-users/utils"
 import { ROLES } from "@/features/auth/permissions"
 import { requirePermission } from "@/features/auth/session"
+import { isEnabled } from "@/lib/features"
 import { cn } from "@/lib/utils"
 
 export const metadata: Metadata = { title: "Roles" }
@@ -27,8 +28,9 @@ export default async function RolesPage() {
             <CardHeader>
               <CardTitle className="text-lg font-semibold text-gray-900">{role.name}</CardTitle>
               <p className="text-sm text-gray-500">
-                {role.description} 2-step verification is{" "}
-                {role.twoStepRequired ? "required" : "optional"}.
+                {role.description}
+                {isEnabled("twoStepVerification") &&
+                  ` 2-step verification is ${role.twoStepRequired ? "required" : "optional"}.`}
               </p>
             </CardHeader>
             <CardContent>

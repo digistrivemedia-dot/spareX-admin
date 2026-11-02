@@ -117,6 +117,7 @@ All switches live in one file, `src/lib/features.ts`, and are shown read-only in
 | `coupons` | off | Coupons menu items (A47, A48). Screens are built either way |
 | `b2cCashOnDelivery` | off | COD for B2C orders (A55 Delivery, payment filters) |
 | `garagePayouts` | off | Garage payouts menu item (A59) |
+| `twoStepVerification` | off | The code step at sign-in (A01) and its settings on My profile (A03). Off = email + password only, for every role (Q-33) |
 
 A switch only hides or shows; the screens and types behind it are always built and kept working.
 

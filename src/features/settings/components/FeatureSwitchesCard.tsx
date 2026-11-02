@@ -18,6 +18,10 @@ const DESCRIPTIONS: Record<FeatureSwitch, { label: string; detail: string }> = {
   coupons: { label: "Coupons", detail: "Coupons menu and the coupon box on B2C (Q-06)." },
   b2cCashOnDelivery: { label: "B2C cash on delivery", detail: "COD at B2C checkout (Q-05)." },
   garagePayouts: { label: "Garage payouts", detail: "Payouts to partner garages (Q-09)." },
+  twoStepVerification: {
+    label: "2-step verification",
+    detail: "A code after email and password at sign-in (Q-33).",
+  },
 }
 
 /** Read only: switches change in code (`lib/features.ts`) once the client decides. */

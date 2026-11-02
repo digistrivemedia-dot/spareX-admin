@@ -8,10 +8,12 @@ import { FormAlert } from "@/components/ui/FormAlert"
 import { getTwoStepChallenge } from "@/features/auth/api"
 import { TwoStepForm } from "@/features/auth/components/TwoStepForm"
 import { TWO_STEP_COOKIE } from "@/features/auth/cookies"
+import { isEnabled } from "@/lib/features"
 
 export const metadata: Metadata = { title: "2-step verification" }
 
 export default async function VerifyPage({ searchParams }: PageProps<"/login/verify">) {
+  if (!isEnabled("twoStepVerification")) redirect("/login")
   const { next } = await searchParams
   const challengeId = (await cookies()).get(TWO_STEP_COOKIE)?.value
   const challenge = challengeId ? await getTwoStepChallenge(challengeId) : null

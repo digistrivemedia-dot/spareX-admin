@@ -14,8 +14,9 @@ npm install
 npm run dev        # http://localhost:3000
 ```
 
-Sign in with a demo account (listed on the sign-in screen, password `Demo@1234`). Super Admins use 2-step
-verification; the demo code is `123456`. Admins see everything except admin users, roles, settings and integrations.
+Sign in with a demo account (listed on the sign-in screen, password `Demo@1234`). Admins see everything except admin
+users, roles, settings and integrations. 2-step verification is built but switched off (`twoStepVerification` in
+`src/lib/features.ts`); when it is on, the demo code is `123456`.
 
 | Script           | What it does                       |
 | ---------------- | ---------------------------------- |

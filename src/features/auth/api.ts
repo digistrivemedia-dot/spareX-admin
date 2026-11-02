@@ -34,7 +34,8 @@ export async function getUserByToken(token: string): Promise<AdminUser | null> {
 }
 
 export async function signOut(token: string): Promise<void> {
-  if (useMock) return mock.signOut(token)
+  // The demo keeps no session on the server; the sign-out action clears the cookie.
+  if (useMock) return
   return apiClient.post("/auth/sign-out", undefined, { token })
 }
 

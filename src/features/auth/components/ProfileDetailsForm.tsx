@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { TextField } from "@/components/ui/TextField"
 import { updateProfileAction } from "@/features/auth/account-actions"
 import { profileSchema, type ProfileValues } from "@/features/auth/schemas"
+import { isEnabled } from "@/lib/features"
 import { formatPhone } from "@/lib/format"
 
 type ProfileDetailsFormProps = { name: string; phone: string; email: string }
@@ -31,7 +32,11 @@ export function ProfileDetailsForm({ name, phone, email }: ProfileDetailsFormPro
           type="tel"
           autoComplete="tel"
           inputMode="tel"
-          description="2-step verification codes are sent here."
+          description={
+            isEnabled("twoStepVerification")
+              ? "2-step verification codes are sent here."
+              : undefined
+          }
         />
         <Field>
           <FieldLabel htmlFor="email">Email</FieldLabel>

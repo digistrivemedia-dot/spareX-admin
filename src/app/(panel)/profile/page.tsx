@@ -8,13 +8,17 @@ import { MyActivity } from "@/features/auth/components/MyActivity"
 import { ProfileDetailsForm } from "@/features/auth/components/ProfileDetailsForm"
 import { TwoStepSetting } from "@/features/auth/components/TwoStepSetting"
 import { requireSession } from "@/features/auth/session"
+import { isEnabled } from "@/lib/features"
 import { formatDateTime, formatPhone } from "@/lib/format"
 
 export const metadata: Metadata = { title: "My profile" }
 
 const TABS = [
   { id: "details", label: "Details" },
-  { id: "security", label: "Password and 2-step" },
+  {
+    id: "security",
+    label: isEnabled("twoStepVerification") ? "Password and 2-step" : "Password",
+  },
   { id: "activity", label: "My activity" },
 ]
 
@@ -43,12 +47,14 @@ export default async function ProfilePage({ searchParams }: PageProps<"/profile"
         )}
         {tab === "security" && (
           <>
-            <TwoStepSetting
-              enabled={user.twoStepEnabled}
-              required={role.twoStepRequired}
-              roleName={role.name}
-              phone={user.phone}
-            />
+            {isEnabled("twoStepVerification") && (
+              <TwoStepSetting
+                enabled={user.twoStepEnabled}
+                required={role.twoStepRequired}
+                roleName={role.name}
+                phone={user.phone}
+              />
+            )}
             <ChangePasswordForm />
           </>
         )}
